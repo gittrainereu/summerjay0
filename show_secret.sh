@@ -8,5 +8,5 @@ else
 fi
 
 sec="____"
-out="${sec}$SUPER_SECRET${sec}"
+out="${sec}${SUPER_SECRET}${sec}"
 echo ${out}
