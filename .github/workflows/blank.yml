@@ -6,6 +6,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name:  show secrets and env  
         shell: bash
         env:
