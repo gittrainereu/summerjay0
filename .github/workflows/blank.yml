@@ -1,35 +1,53 @@
-name: Jochen's nicer workflow 
+# .github/workflows/deployment.yml
+name: Formular If
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      version:
+        description: 'Version/tag to deploy (e.g., v1.2.3)'
+        required: true
+        default: 'v1.0.0'
+      deploy_notes:
+        description: 'Optional deployment notes'
+        required: false
+      dry_run:
+        description: 'Run in dry-run mode'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
-  build:
- 
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run a one-line script
-        run: | 
-          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
-          pwd 
-          ls -la
-          #/bin/false
-          echo "### Hello world in build after false ! :rocket:" >> $GITHUB_STEP_SUMMARY
-    
-  deploy:
-    
-    # needs a succesful build 
-    # THAT IS IMPORTANT 
-    needs: build 
-    runs-on: ubuntu-latest 
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - name: Starting the deploy 
-        run: | 
-          echo "starting the deployment process" 
-          ls -la
-          echo "### Hello world in deploy after false ! :rocket:" >> $GITHUB_STEP_SUMMARY
+      - name: Display Input Values
+        run: |
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Version: ${{ github.event.inputs.version }}"
+          echo "Deploy Notes: ${{ github.event.inputs.deploy_notes }}"
+          echo "Dry Run: ${{ github.event.inputs.dry_run }}"
+
+      - name: Run Deployment Script
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "Performing dry-run deployment to ${{ github.event.inputs.environment }}..."
+            # simulate deployment here
+          else
+            echo "Deploying version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}..."
+            # real deployment commands go here
+          fi
