@@ -1,4 +1,4 @@
-name: Ohne needs
+name: Mit needs
 
 on: [push]
 
@@ -11,6 +11,7 @@ jobs:
           sleep 30 
 
   test:
+    needs: build 
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -18,6 +19,7 @@ jobs:
           sleep 30
 
   deploy:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - run: |
