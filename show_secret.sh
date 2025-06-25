@@ -3,7 +3,7 @@
 echo "showing_secret"
 echo "$SUPER_SECRET"
 echo "done"
-if [ $SUPER_SECRET" = "***" ] 
+if [ $SUPER_SECRET = "***" ] 
 then
 	echo "***"
 else
