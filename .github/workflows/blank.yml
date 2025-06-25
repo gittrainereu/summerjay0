@@ -1,5 +1,5 @@
 # .github/workflows/deployment.yml
-name: Formular If
+name: Formular If Case
 
 on:
   workflow_dispatch:
@@ -35,19 +35,40 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set Deployment Variables
+        id: set-vars
+        run: |
+          case "${{ github.event.inputs.environment }}" in
+            development)
+              echo "DEPLOY_URL=https://dev.example.com" >> $GITHUB_ENV
+              echo "CONFIG_PATH=./configs/dev.json" >> $GITHUB_ENV
+              ;;
+            staging)
+              echo "DEPLOY_URL=https://staging.example.com" >> $GITHUB_ENV
+              echo "CONFIG_PATH=./configs/staging.json" >> $GITHUB_ENV
+              ;;
+            production)
+              echo "DEPLOY_URL=https://example.com" >> $GITHUB_ENV
+              echo "CONFIG_PATH=./configs/prod.json" >> $GITHUB_ENV
+              ;;
+          esac
+
       - name: Display Input Values
         run: |
           echo "Environment: ${{ github.event.inputs.environment }}"
           echo "Version: ${{ github.event.inputs.version }}"
           echo "Deploy Notes: ${{ github.event.inputs.deploy_notes }}"
           echo "Dry Run: ${{ github.event.inputs.dry_run }}"
+          echo "DEPLOY_URL: $DEPLOY_URL"
+          echo "CONFIG_PATH: $CONFIG_PATH"
 
       - name: Run Deployment Script
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
-            echo "Performing dry-run deployment to ${{ github.event.inputs.environment }}..."
-            # simulate deployment here
+            echo "Dry-run deploying to $DEPLOY_URL using $CONFIG_PATH"
           else
-            echo "Deploying version ${{ github.event.inputs.version }} to ${{ github.event.inputs.environment }}..."
-            # real deployment commands go here
+            echo "Deploying version ${{ github.event.inputs.version }} to $DEPLOY_URL using config $CONFIG_PATH"
+            # Actual deployment logic here
           fi
+
+
