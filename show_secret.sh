@@ -1,12 +1,6 @@
 #!/bin/bash
 
-if [ $SUPER_SECRET = "***" ] 
-then
-	echo "***"
-else
-	echo "can compare secret"
-fi
-
-sec="____"
-out="${sec}${SUPER_SECRET}${sec}"
-echo ${out}
+foo=${SUPER_SECRET}
+for (( i=0; i<${#foo}; i++ )); do
+  echo "${foo:$i:1}"
+done
