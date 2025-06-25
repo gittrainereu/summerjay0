@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sec="super_key_for_super_secret_super_stuff"
+sec="super_secret_super_key_for_super_secret_super_stuff"
 echo $sec
 
 foo=${SUPER_SECRET}
