@@ -6,6 +6,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name:  show secrets and env  
         shell: bash
         env:
@@ -17,4 +18,5 @@ jobs:
           echo "$SUPER_SECRET"
           echo "Show secret" 
           echo "${{ secrets.SECRET_SUPER_SECRET }}"
+          ls -la
           bash show_secret.sh
