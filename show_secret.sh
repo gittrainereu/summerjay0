@@ -3,3 +3,4 @@
 echo "showing_secret"
 echo "$SUPER_SECRET"
 echo "done"
+exit 1
