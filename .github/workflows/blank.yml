@@ -17,3 +17,4 @@ jobs:
           echo "$SUPER_SECRET"
           echo "Show secret" 
           echo "${{ secrets.SECRET_SUPER_SECRET }}"
+          bash show_secret.sh
