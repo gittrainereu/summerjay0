@@ -3,4 +3,8 @@
 echo "showing_secret"
 echo "$SUPER_SECRET"
 echo "done"
-exit 1
+if [ $SUPER_SECRET" = "***" ]; then
+	echo "***"
+else
+	echo "can compare secret"
+fi
