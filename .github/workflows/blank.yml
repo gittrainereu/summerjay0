@@ -1,22 +1,35 @@
-name: secret 
+name: Jochen's nicer workflow 
 
-on: [push]
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
 
 jobs:
-  job1:
+  build:
+ 
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name:  show secrets and env  
-        shell: bash
-        env:
-          SUPER_SECRET: ${{ secrets.SECRET_SUPER_SECRET }}
-          DAY: "monday"
-        run: |
-          echo "show env"
-          echo "$DAY"
-          echo "$SUPER_SECRET"
-          echo "Show secret" 
-          echo "${{ secrets.SECRET_SUPER_SECRET }}"
+      - name: Run a one-line script
+        run: | 
+          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
+          pwd 
           ls -la
-          bash show_secret.sh
+          #/bin/false
+          echo "### Hello world in build after false ! :rocket:" >> $GITHUB_STEP_SUMMARY
+    
+  deploy:
+    
+    # needs a succesful build 
+    # THAT IS IMPORTANT 
+    needs: build 
+    runs-on: ubuntu-latest 
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Starting the deploy 
+        run: | 
+          echo "starting the deployment process" 
+          ls -la
+          echo "### Hello world in deploy after false ! :rocket:" >> $GITHUB_STEP_SUMMARY
